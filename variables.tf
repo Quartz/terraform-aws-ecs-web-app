@@ -37,6 +37,11 @@ variable "codepipeline_enabled" {
   default     = "true"
 }
 
+variable "codepipeline_approve_sns_arn" {
+  type        = "string"
+  description = "The SNS ARN for Codepipeline approval"
+}
+
 variable "container_name" {
   type        = "string"
   description = "The name of the ECS container."
