@@ -37,7 +37,7 @@ module "alb_ingress" {
 
 module "container_definition" {
   source                       = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.3.0"
-  container_name               = "${module.default_label.id}"
+  container_name               = "${var.container_name}"
   container_image              = "${var.container_image}"
   container_memory             = "${var.container_memory}"
   container_memory_reservation = "${var.container_memory_reservation}"
@@ -61,7 +61,7 @@ module "ecs_alb_service_task" {
   attributes                = "${var.attributes}"
   alb_target_group_arn      = "${module.alb_ingress.target_group_arn}"
   container_definition_json = "${module.container_definition.json}"
-  container_name            = "${module.default_label.id}"
+  container_name            = "${var.container_name}"
   desired_count             = "${var.desired_count}"
   task_cpu                  = "${var.container_cpu}"
   task_memory               = "${var.container_memory}"
@@ -75,10 +75,11 @@ module "ecs_alb_service_task" {
 
 module "ecs_codepipeline" {
   enabled               = "${var.codepipeline_enabled}"
-  source                = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.4.2"
+  source                = "git::https://github.com/Quartz/terraform-aws-ecs-codepipeline.git?ref=tags/0.5.0-patch-approval"
   name                  = "${var.name}"
   namespace             = "${var.namespace}"
   stage                 = "${var.stage}"
+  approve_sns_arn       = "${var.approve_sns_arn}"
   attributes            = "${var.attributes}"
   github_oauth_token    = "${var.github_oauth_token}"
   github_webhook_events = "${var.github_webhook_events}"
@@ -94,7 +95,7 @@ module "ecs_codepipeline" {
   privileged_mode       = "true"
   poll_source_changes   = "${var.poll_source_changes}"
 
-  webhook_enabled             = "${var.webhook_enabled}"
+  webhook_enabled             = "${var.codepipeline_enabled}"
   webhook_target_action       = "${var.webhook_target_action}"
   webhook_authentication      = "${var.webhook_authentication}"
   webhook_filter_json_path    = "${var.webhook_filter_json_path}"
@@ -103,7 +104,7 @@ module "ecs_codepipeline" {
   environment_variables = [{
     "name" = "CONTAINER_NAME"
 
-    "value" = "${module.default_label.id}"
+    "value" = "${var.container_name}"
   }]
 }
 

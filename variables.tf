@@ -37,6 +37,12 @@ variable "codepipeline_enabled" {
   default     = "true"
 }
 
+variable "container_name" {
+  type        = "string"
+  description = "The name of the ECS container."
+  default     = "web"
+}
+
 variable "container_image" {
   type        = "string"
   description = "The default container image to use in container definition."
