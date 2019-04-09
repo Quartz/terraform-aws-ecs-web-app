@@ -57,42 +57,42 @@ module "ecs_alb_service_task" {
   container_port     = "${var.container_port}"
 }
 
-module "ecs_codepipeline" {
-  enabled   = "${var.codepipeline_enabled}"
-  source    = "git::https://github.com/Quartz/terraform-aws-ecs-codepipeline.git?ref=tags/0.5.0-patch-approval"
-  name      = "${var.name}"
-  namespace = "${var.namespace}"
-  stage     = "${var.stage}"
-
-  # approve_sns_arn       = "${var.codepipeline_approve_sns_arn}"
-  attributes            = "${var.attributes}"
-  github_oauth_token    = "${var.github_oauth_token}"
-  github_webhook_events = "${var.github_webhook_events}"
-  repo_owner            = "${var.repo_owner}"
-  repo_name             = "${var.repo_name}"
-  branch                = "${var.branch}"
-  badge_enabled         = "${var.badge_enabled}"
-  build_timeout         = "${var.build_timeout}"
-  buildspec             = "${var.buildspec}"
-  image_repo_name       = "${module.ecr.repository_name}"
-  service_name          = "${module.ecs_alb_service_task.service_name}"
-  staging_service_name  = "${var.namespace}-dev-${var.name}"
-  ecs_cluster_name      = "${var.ecs_cluster_name}"
-  privileged_mode       = "true"
-  poll_source_changes   = "${var.poll_source_changes}"
-
-  webhook_enabled             = "${var.codepipeline_enabled}"
-  webhook_target_action       = "${var.webhook_target_action}"
-  webhook_authentication      = "${var.webhook_authentication}"
-  webhook_filter_json_path    = "${var.webhook_filter_json_path}"
-  webhook_filter_match_equals = "${var.webhook_filter_match_equals}"
-
-  environment_variables = [{
-    "name" = "CONTAINER_NAME"
-
-    "value" = "${var.container_name}"
-  }]
-}
+# module "ecs_codepipeline" {
+#   enabled   = "${var.codepipeline_enabled}"
+#   source    = "git::https://github.com/Quartz/terraform-aws-ecs-codepipeline.git?ref=tags/0.5.0-patch-approval"
+#   name      = "${var.name}"
+#   namespace = "${var.namespace}"
+#   stage     = "${var.stage}"
+#
+#   approve_sns_arn       = "${var.codepipeline_approve_sns_arn}"
+#   attributes            = "${var.attributes}"
+#   github_oauth_token    = "${var.github_oauth_token}"
+#   github_webhook_events = "${var.github_webhook_events}"
+#   repo_owner            = "${var.repo_owner}"
+#   repo_name             = "${var.repo_name}"
+#   branch                = "${var.branch}"
+#   badge_enabled         = "${var.badge_enabled}"
+#   build_timeout         = "${var.build_timeout}"
+#   buildspec             = "${var.buildspec}"
+#   image_repo_name       = "${module.ecr.repository_name}"
+#   service_name          = "${module.ecs_alb_service_task.service_name}"
+#   staging_service_name  = "${var.namespace}-dev-${var.name}"
+#   ecs_cluster_name      = "${var.ecs_cluster_name}"
+#   privileged_mode       = "true"
+#   poll_source_changes   = "${var.poll_source_changes}"
+#
+#   webhook_enabled             = "${var.codepipeline_enabled}"
+#   webhook_target_action       = "${var.webhook_target_action}"
+#   webhook_authentication      = "${var.webhook_authentication}"
+#   webhook_filter_json_path    = "${var.webhook_filter_json_path}"
+#   webhook_filter_match_equals = "${var.webhook_filter_match_equals}"
+#
+#   environment_variables = [{
+#     "name" = "CONTAINER_NAME"
+#
+#     "value" = "${var.container_name}"
+#   }]
+# }
 
 module "autoscaling" {
   enabled               = "${var.autoscaling_enabled}"
