@@ -54,6 +54,11 @@ variable "container_image" {
   default     = "cloudposse/default-backend"
 }
 
+variable "container_definition_json" {
+  type        = "string"
+  description = "The JSON of the task container definition"
+}
+
 variable "container_cpu" {
   type        = "string"
   description = "The vCPU setting to control cpu limits of container. (If FARGATE launch type is used below, this must be a supported vCPU size from the table here: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html)"

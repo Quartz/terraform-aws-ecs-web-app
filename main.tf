@@ -35,42 +35,44 @@ module "alb_ingress" {
   port                = "${var.container_port}"
 }
 
-module "container_definition" {
-  source                       = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.3.0"
-  container_name               = "${var.container_name}"
-  container_image              = "${var.container_image}"
-  container_memory             = "${var.container_memory}"
-  container_memory_reservation = "${var.container_memory_reservation}"
-  container_cpu                = "${var.container_cpu}"
-  healthcheck                  = "${var.healthcheck}"
-  environment                  = "${var.environment}"
-  port_mappings                = "${var.port_mappings}"
-
-  log_options = {
-    "awslogs-region"        = "${var.aws_logs_region}"
-    "awslogs-group"         = "${aws_cloudwatch_log_group.app.name}"
-    "awslogs-stream-prefix" = "${var.name}"
-  }
-}
+# module "container_definition" {
+#   source                       = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.10.0"
+#   container_name               = "${var.container_name}"
+#   container_image              = "${var.container_image}"
+#   container_memory             = "${var.container_memory}"
+#   container_memory_reservation = "${var.container_memory_reservation}"
+#   container_cpu                = "${var.container_cpu}"
+#   healthcheck                  = "${var.healthcheck}"
+#   environment                  = "${var.environment}"
+#   port_mappings                = "${var.port_mappings}"
+#
+#   log_options = {
+#     "awslogs-region"        = "${var.aws_logs_region}"
+#     "awslogs-group"         = "${aws_cloudwatch_log_group.app.name}"
+#     "awslogs-stream-prefix" = "${var.name}"
+#   }
+# }
 
 module "ecs_alb_service_task" {
-  source                    = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.6.3"
-  name                      = "${var.name}"
-  namespace                 = "${var.namespace}"
-  stage                     = "${var.stage}"
-  attributes                = "${var.attributes}"
-  alb_target_group_arn      = "${module.alb_ingress.target_group_arn}"
-  container_definition_json = "${module.container_definition.json}"
-  container_name            = "${var.container_name}"
-  desired_count             = "${var.desired_count}"
-  task_cpu                  = "${var.container_cpu}"
-  task_memory               = "${var.container_memory}"
-  ecs_cluster_arn           = "${var.ecs_cluster_arn}"
-  launch_type               = "${var.launch_type}"
-  vpc_id                    = "${var.vpc_id}"
-  security_group_ids        = ["${var.ecs_security_group_ids}"]
-  private_subnet_ids        = ["${var.ecs_private_subnet_ids}"]
-  container_port            = "${var.container_port}"
+  source               = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.6.3"
+  name                 = "${var.name}"
+  namespace            = "${var.namespace}"
+  stage                = "${var.stage}"
+  attributes           = "${var.attributes}"
+  alb_target_group_arn = "${module.alb_ingress.target_group_arn}"
+
+  container_definition_json = "${var.container_definition}"
+
+  container_name     = "${var.container_name}"
+  desired_count      = "${var.desired_count}"
+  task_cpu           = "${var.container_cpu}"
+  task_memory        = "${var.container_memory}"
+  ecs_cluster_arn    = "${var.ecs_cluster_arn}"
+  launch_type        = "${var.launch_type}"
+  vpc_id             = "${var.vpc_id}"
+  security_group_ids = ["${var.ecs_security_group_ids}"]
+  private_subnet_ids = ["${var.ecs_private_subnet_ids}"]
+  container_port     = "${var.container_port}"
 }
 
 module "ecs_codepipeline" {
