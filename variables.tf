@@ -48,7 +48,7 @@ variable "container_name" {
   default     = "web"
 }
 
-variable "container_definition_json" {
+variable "container_definition" {
   type        = "string"
   description = "The JSON of the task container definition"
 }
