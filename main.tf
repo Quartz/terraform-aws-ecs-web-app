@@ -35,24 +35,6 @@ module "alb_ingress" {
   port                = "${var.container_port}"
 }
 
-# module "container_definition" {
-#   source                       = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.10.0"
-#   container_name               = "${var.container_name}"
-#   container_image              = "${var.container_image}"
-#   container_memory             = "${var.container_memory}"
-#   container_memory_reservation = "${var.container_memory_reservation}"
-#   container_cpu                = "${var.container_cpu}"
-#   healthcheck                  = "${var.healthcheck}"
-#   environment                  = "${var.environment}"
-#   port_mappings                = "${var.port_mappings}"
-#
-#   log_options = {
-#     "awslogs-region"        = "${var.aws_logs_region}"
-#     "awslogs-group"         = "${aws_cloudwatch_log_group.app.name}"
-#     "awslogs-stream-prefix" = "${var.name}"
-#   }
-# }
-
 module "ecs_alb_service_task" {
   source               = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.6.3"
   name                 = "${var.name}"

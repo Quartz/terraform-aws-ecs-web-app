@@ -48,12 +48,6 @@ variable "container_name" {
   default     = "web"
 }
 
-variable "container_image" {
-  type        = "string"
-  description = "The default container image to use in container definition."
-  default     = "cloudposse/default-backend"
-}
-
 variable "container_definition_json" {
   type        = "string"
   description = "The JSON of the task container definition"
@@ -71,27 +65,10 @@ variable "container_memory" {
   default     = "512"
 }
 
-variable "container_memory_reservation" {
-  type        = "string"
-  description = "The amount of RAM (Soft Limit) to allow container to use in MB. This value must be less than container_memory if set."
-  default     = ""
-}
-
 variable "container_port" {
   type        = "string"
   description = "The port number on the container bound to assigned host_port."
   default     = "80"
-}
-
-variable "port_mappings" {
-  type        = "list"
-  description = "The port mappings to configure for the container. This is a list of maps. Each map should contain \"containerPort\", \"hostPort\", and \"protocol\", where \"protocol\" is one of \"tcp\" or \"udp\". If using containers in a task with the awsvpc or host network mode, the hostPort can either be left blank or set to the same value as the containerPort."
-
-  default = [{
-    "containerPort" = 80
-    "hostPort"      = 80
-    "protocol"      = "tcp"
-  }]
 }
 
 variable "desired_count" {
@@ -100,34 +77,10 @@ variable "desired_count" {
   default     = "1"
 }
 
-variable "host_port" {
-  type        = "string"
-  description = "The port number to bind container_port to on the host"
-  default     = ""
-}
-
 variable "launch_type" {
   type        = "string"
   description = "The ECS launch type (valid options: FARGATE or EC2)"
   default     = "FARGATE"
-}
-
-variable "environment" {
-  type        = "list"
-  description = "The environment variables for the task definition. This is a list of maps"
-  default     = []
-}
-
-variable "protocol" {
-  type        = "string"
-  description = "The protocol used for the port mapping. Options: tcp or udp."
-  default     = "tcp"
-}
-
-variable "healthcheck" {
-  type        = "map"
-  description = "A map containing command (string), interval (duration in seconds), retries (1-10, number of times to retry before marking container unhealthy, and startPeriod (0-300, optional grace period to wait, in seconds, before failed healthchecks count toward retries)"
-  default     = {}
 }
 
 variable "alb_target_group_arn" {
