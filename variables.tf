@@ -37,10 +37,10 @@ variable "codepipeline_enabled" {
   default     = "true"
 }
 
-variable "codepipeline_approve_sns_arn" {
-  type        = "string"
-  description = "The SNS ARN for Codepipeline approval"
-}
+# variable "codepipeline_approve_sns_arn" {
+#   type        = "string"
+#   description = "The SNS ARN for Codepipeline approval"
+# }
 
 variable "container_name" {
   type        = "string"
@@ -50,7 +50,7 @@ variable "container_name" {
 
 variable "container_definition" {
   type        = "string"
-  description = "The JSON of the task container definition"
+  description = "The task container definition (as JSON)"
 }
 
 variable "container_cpu" {
@@ -200,10 +200,10 @@ variable "listener_arns_count" {
   description = "Number of elements in list of ALB Listener ARNs for the ECS service."
 }
 
-variable "aws_logs_region" {
-  type        = "string"
-  description = "The region for the AWS Cloudwatch Logs group."
-}
+# variable "aws_logs_region" {
+#   type        = "string"
+#   description = "The region for the AWS Cloudwatch Logs group."
+# }
 
 variable "ecs_alarms_enabled" {
   type        = "string"

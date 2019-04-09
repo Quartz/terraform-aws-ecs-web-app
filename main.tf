@@ -58,12 +58,13 @@ module "ecs_alb_service_task" {
 }
 
 module "ecs_codepipeline" {
-  enabled               = "${var.codepipeline_enabled}"
-  source                = "git::https://github.com/Quartz/terraform-aws-ecs-codepipeline.git?ref=tags/0.5.0-patch-approval"
-  name                  = "${var.name}"
-  namespace             = "${var.namespace}"
-  stage                 = "${var.stage}"
-  approve_sns_arn       = "${var.codepipeline_approve_sns_arn}"
+  enabled   = "${var.codepipeline_enabled}"
+  source    = "git::https://github.com/Quartz/terraform-aws-ecs-codepipeline.git?ref=tags/0.5.0-patch-approval"
+  name      = "${var.name}"
+  namespace = "${var.namespace}"
+  stage     = "${var.stage}"
+
+  # approve_sns_arn       = "${var.codepipeline_approve_sns_arn}"
   attributes            = "${var.attributes}"
   github_oauth_token    = "${var.github_oauth_token}"
   github_webhook_events = "${var.github_webhook_events}"
