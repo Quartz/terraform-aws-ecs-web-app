@@ -21,11 +21,12 @@ resource "aws_cloudwatch_log_group" "app" {
 }
 
 module "alb_ingress" {
-  source                   = "git::https://github.com/cloudposse/terraform-aws-alb-ingress.git?ref=tags/0.5.0"
-  name                     = "${var.name}"
-  namespace                = "${var.namespace}"
-  stage                    = "${var.stage}"
-  attributes               = "${var.attributes}"
+  source     = "git::https://github.com/cloudposse/terraform-aws-alb-ingress.git?ref=tags/0.5.0"
+  name       = "${var.name}"
+  namespace  = "${var.namespace}"
+  stage      = "${var.stage}"
+  attributes = "${var.attributes}"
+
   vpc_id                   = "${var.vpc_id}"
   listener_arns            = "${var.listener_arns}"
   listener_arns_count      = "${var.listener_arns_count}"
@@ -38,15 +39,15 @@ module "alb_ingress" {
   authenticated_priority   = "${var.alb_ingress_listener_authenticated_priority}"
   unauthenticated_priority = "${var.alb_ingress_listener_unauthenticated_priority}"
   authentication_action    = "${var.authentication_action}"
-  depends_on               = "${var.alb_arn}"
 }
 
 module "ecs_alb_service_task" {
-  source                            = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.10.0"
-  name                              = "${var.name}"
-  namespace                         = "${var.namespace}"
-  stage                             = "${var.stage}"
-  attributes                        = "${var.attributes}"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.10.0"
+  name       = "${var.name}"
+  namespace  = "${var.namespace}"
+  stage      = "${var.stage}"
+  attributes = "${var.attributes}"
+
   alb_target_group_arn              = "${module.alb_ingress.target_group_arn}"
   container_name                    = "${module.default_label.id}"
   desired_count                     = "${var.desired_count}"
@@ -100,12 +101,13 @@ module "ecs_codepipeline" {
 }
 
 module "autoscaling" {
-  enabled               = "${var.autoscaling_enabled}"
-  source                = "git::https://github.com/cloudposse/terraform-aws-ecs-cloudwatch-autoscaling.git?ref=tags/0.1.0"
-  name                  = "${var.name}"
-  namespace             = "${var.namespace}"
-  stage                 = "${var.stage}"
-  attributes            = "${var.attributes}"
+  enabled    = "${var.autoscaling_enabled}"
+  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-cloudwatch-autoscaling.git?ref=tags/0.1.0"
+  name       = "${var.name}"
+  namespace  = "${var.namespace}"
+  stage      = "${var.stage}"
+  attributes = "${var.attributes}"
+
   service_name          = "${module.ecs_alb_service_task.service_name}"
   cluster_name          = "${var.ecs_cluster_name}"
   min_capacity          = "${var.autoscaling_min_capacity}"
