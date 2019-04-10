@@ -83,6 +83,12 @@ variable "launch_type" {
   default     = "FARGATE"
 }
 
+variable "alb_arn" {
+  type        = "string"
+  description = "ARN for ALB - used to verify it has been created"
+  default     = ""
+}
+
 variable "alb_target_group_arn" {
   type        = "string"
   description = "Pass target group down to module"

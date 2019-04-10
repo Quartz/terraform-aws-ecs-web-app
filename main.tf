@@ -38,6 +38,7 @@ module "alb_ingress" {
   authenticated_priority   = "${var.alb_ingress_listener_authenticated_priority}"
   unauthenticated_priority = "${var.alb_ingress_listener_unauthenticated_priority}"
   authentication_action    = "${var.authentication_action}"
+  depends_on               = "${var.alb_arn}"
 }
 
 module "ecs_alb_service_task" {
@@ -58,8 +59,7 @@ module "ecs_alb_service_task" {
   security_group_ids                = ["${var.ecs_security_group_ids}"]
   private_subnet_ids                = ["${var.ecs_private_subnet_ids}"]
   container_port                    = "${var.container_port}"
-
-  container_definition_json = "${var.container_definition}"
+  container_definition_json         = "${var.container_definition}"
 }
 
 module "ecs_codepipeline" {
