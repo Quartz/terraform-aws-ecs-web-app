@@ -163,8 +163,44 @@ variable "alb_arn_suffix" {
 
 variable "alb_ingress_healthcheck_path" {
   type        = "string"
-  description = "The path of the healthcheck which the ALB checks."
+  description = "The path of the healthcheck which the ALB checks"
   default     = "/"
+}
+
+variable "alb_ingress_listener_unauthenticated_priority" {
+  type        = "string"
+  default     = "1000"
+  description = "The priority for the rules without authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_authenticated_priority` since a listener can't have multiple rules with the same priority"
+}
+
+variable "alb_ingress_listener_authenticated_priority" {
+  type        = "string"
+  default     = "300"
+  description = "The priority for the rules with authentication, between 1 and 50000 (1 being highest priority). Must be different from `alb_ingress_listener_unauthenticated_priority` since a listener can't have multiple rules with the same priority"
+}
+
+variable "alb_ingress_unauthenticated_hosts" {
+  type        = "list"
+  default     = []
+  description = "Unauthenticated hosts to match in Hosts header"
+}
+
+variable "alb_ingress_authenticated_hosts" {
+  type        = "list"
+  default     = []
+  description = "Authenticated hosts to match in Hosts header"
+}
+
+variable "alb_ingress_unauthenticated_paths" {
+  type        = "list"
+  default     = []
+  description = "Unauthenticated path pattern to match (a maximum of 1 can be defined)"
+}
+
+variable "alb_ingress_authenticated_paths" {
+  type        = "list"
+  default     = []
+  description = "Authenticated path pattern to match (a maximum of 1 can be defined)"
 }
 
 variable "alb_ingress_hosts" {
