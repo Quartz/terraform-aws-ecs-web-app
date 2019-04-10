@@ -247,6 +247,12 @@ variable "ecs_alarms_enabled" {
   default     = "false"
 }
 
+variable "health_check_grace_period_seconds" {
+  type        = "string"
+  description = "Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 7200. Only valid for services configured to use load balancers"
+  default     = "0"
+}
+
 variable "ecs_cluster_arn" {
   type        = "string"
   description = "The ECS Cluster ARN where ECS Service will be provisioned."
@@ -513,4 +519,10 @@ variable "webhook_filter_json_path" {
 variable "webhook_filter_match_equals" {
   description = "The value to match on (e.g. refs/heads/{Branch})"
   default     = "refs/heads/{Branch}"
+}
+
+variable "authentication_action" {
+  type        = "map"
+  default     = {}
+  description = "Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `alb_ingress_authenticated_hosts` or `alb_ingress_authenticated_paths` are provided"
 }
