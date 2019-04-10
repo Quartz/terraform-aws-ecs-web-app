@@ -41,9 +41,32 @@ module "alb_ingress" {
   authentication_action    = "${var.authentication_action}"
 }
 
+##### Start Hack #####
+# (allows module dependencies)
+
+locals {
+  pseudo_depends_on = ["${var.name}", "${null_resource.dummy_dependency.id}"]
+}
+
+data "template_file" "dummy_template" {
+  template = ""
+
+  vars = {
+    dummy_var = "${module.aws_alb.target_group_arn}"
+  }
+}
+
+resource "null_resource" "dummy_dependency" {
+  triggers = {
+    dummy_template = "${data.template_file.dummy_template.rendered}"
+  }
+}
+
+##### End Hack #####
+
 module "ecs_alb_service_task" {
   source     = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.10.0"
-  name       = "${var.name}"
+  name       = "${element(local.pseudo_depends_on, 0)}"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   attributes = "${var.attributes}"

@@ -526,9 +526,3 @@ variable "authentication_action" {
   default     = {}
   description = "Authentication action to be placed in front of all other ALB listener actions to authenticate users with Cognito or OIDC. Required when `alb_ingress_authenticated_hosts` or `alb_ingress_authenticated_paths` are provided"
 }
-
-variable "pseudo_depends_on" {
-  type        = "string"
-  description = "This is a variable that allows parent modules to use a pseudo depends_on pattern"
-  default     = ""
-}
