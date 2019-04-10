@@ -43,8 +43,7 @@ module "ecs_alb_service_task" {
   attributes           = "${var.attributes}"
   alb_target_group_arn = "${module.alb_ingress.target_group_arn}"
 
-  # container_definition_json = "${var.container_definition}"
-  container_definition_json = ["${var.container_definition}"]
+  container_definition_json = "${var.container_definition}"
 
   container_name     = "${var.container_name}"
   desired_count      = "${var.desired_count}"
