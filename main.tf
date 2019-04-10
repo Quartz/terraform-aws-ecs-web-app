@@ -52,7 +52,7 @@ data "template_file" "dummy_template" {
   template = ""
 
   vars = {
-    dummy_var = "${module.alb_ingress.target_group_arn}"
+    dummy_var = "${var.pseudo_depends_on}"
   }
 }
 
@@ -64,6 +64,7 @@ resource "null_resource" "dummy_dependency" {
 
 ##### End Hack #####
 
+# THIS IS WHAT MUST WAIT
 module "ecs_alb_service_task" {
   source     = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.10.0"
   name       = "${element(local.pseudo_depends_on, 0)}"
