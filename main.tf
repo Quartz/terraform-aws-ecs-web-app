@@ -52,7 +52,7 @@ data "template_file" "dummy_template" {
   template = ""
 
   vars = {
-    dummy_var = "${module.aws_alb.target_group_arn}"
+    dummy_var = "${module.alb_ingress.target_group_arn}"
   }
 }
 
