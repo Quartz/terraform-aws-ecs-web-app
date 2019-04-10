@@ -1,3 +1,4 @@
+# TODO: Passing this in - maybe control at this level?
 module "default_label" {
   source     = "git::https://github.com/cloudposse/terraform-terraform-label.git?ref=tags/0.2.1"
   name       = "${var.name}"
@@ -20,19 +21,23 @@ resource "aws_cloudwatch_log_group" "app" {
 }
 
 module "alb_ingress" {
-  source              = "git::https://github.com/cloudposse/terraform-aws-alb-ingress.git?ref=tags/0.3.1"
-  name                = "${var.name}"
-  namespace           = "${var.namespace}"
-  stage               = "${var.stage}"
-  attributes          = "${var.attributes}"
-  vpc_id              = "${var.vpc_id}"
-  listener_arns       = "${var.listener_arns}"
-  listener_arns_count = "${var.listener_arns_count}"
-  health_check_path   = "${var.alb_ingress_healthcheck_path}"
-  paths               = ["${var.alb_ingress_paths}"]
-  priority            = "${var.alb_ingress_listener_priority}"
-  hosts               = ["${var.alb_ingress_hosts}"]
-  port                = "${var.container_port}"
+  source                   = "git::https://github.com/cloudposse/terraform-aws-alb-ingress.git?ref=tags/0.5.0"
+  name                     = "${var.name}"
+  namespace                = "${var.namespace}"
+  stage                    = "${var.stage}"
+  attributes               = "${var.attributes}"
+  vpc_id                   = "${var.vpc_id}"
+  listener_arns            = "${var.listener_arns}"
+  listener_arns_count      = "${var.listener_arns_count}"
+  port                     = "${var.container_port}"
+  health_check_path        = "${var.alb_ingress_healthcheck_path}"
+  authenticated_paths      = ["${var.alb_ingress_authenticated_paths}"]
+  unauthenticated_paths    = ["${var.alb_ingress_unauthenticated_paths}"]
+  authenticated_hosts      = ["${var.alb_ingress_authenticated_hosts}"]
+  unauthenticated_hosts    = ["${var.alb_ingress_unauthenticated_hosts}"]
+  authenticated_priority   = "${var.alb_ingress_listener_authenticated_priority}"
+  unauthenticated_priority = "${var.alb_ingress_listener_unauthenticated_priority}"
+  authentication_action    = "${var.authentication_action}"
 }
 
 module "ecs_alb_service_task" {
@@ -55,6 +60,28 @@ module "ecs_alb_service_task" {
   security_group_ids = ["${var.ecs_security_group_ids}"]
   private_subnet_ids = ["${var.ecs_private_subnet_ids}"]
   container_port     = "${var.container_port}"
+}
+
+module "ecs_alb_service_task" {
+  source                            = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.10.0"
+  name                              = "${var.name}"
+  namespace                         = "${var.namespace}"
+  stage                             = "${var.stage}"
+  attributes                        = "${var.attributes}"
+  alb_target_group_arn              = "${module.alb_ingress.target_group_arn}"
+  container_name                    = "${module.default_label.id}"
+  desired_count                     = "${var.desired_count}"
+  health_check_grace_period_seconds = "${var.health_check_grace_period_seconds}"
+  task_cpu                          = "${var.container_cpu}"
+  task_memory                       = "${var.container_memory}"
+  ecs_cluster_arn                   = "${var.ecs_cluster_arn}"
+  launch_type                       = "${var.launch_type}"
+  vpc_id                            = "${var.vpc_id}"
+  security_group_ids                = ["${var.ecs_security_group_ids}"]
+  private_subnet_ids                = ["${var.ecs_private_subnet_ids}"]
+  container_port                    = "${var.container_port}"
+
+  container_definition_json = "${var.container_definition}"
 }
 
 module "ecs_codepipeline" {
