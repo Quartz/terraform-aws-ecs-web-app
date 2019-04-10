@@ -48,8 +48,13 @@ variable "container_name" {
   default     = "web"
 }
 
+# variable "container_definition" {
+#   type        = "string"
+#   description = "The task container definition (as JSON)"
+# }
+
 variable "container_definition" {
-  type        = "string"
+  type        = "list"
   description = "The task container definition (as JSON)"
 }
 
