@@ -64,9 +64,9 @@ resource "null_resource" "dummy_dependency" {
 
 ##### End Hack #####
 
-# THIS IS WHAT MUST WAIT
 module "ecs_alb_service_task" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.10.0"
+  # source     = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.10.0"
+  source     = "git::https://github.com/Quartz/terraform-aws-ecs-alb-service-task.git"
   name       = "${element(local.pseudo_depends_on, 0)}"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
