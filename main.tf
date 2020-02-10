@@ -75,7 +75,7 @@ module "ecs_alb_service_task" {
 
 module "ecs_codepipeline" {
   enabled               = "${var.codepipeline_enabled}"
-  source                = "git::https://github.com/Quartz/terraform-aws-ecs-codepipeline.git?ref=tags/0.5.0-patch-approval"
+  source                = "git::https://github.com/Quartz/terraform-aws-ecs-codepipeline.git?ref=tags/0.5.0-patch-20200210"
   name                  = "${var.name}"
   namespace             = "${var.namespace}"
   stage                 = "${var.stage}"
